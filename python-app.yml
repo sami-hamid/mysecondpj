@@ -1,38 +1,116 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+import unittest
+from employee import Employee
 
-name: Python application
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+class TestEmployee(unittest.TestCase):
 
-jobs:
-  build:
+    def test_email(self):
+        emp_1 = Employee('sami', 'hamid', 50000)
+        emp_2 = Employee('sam', 'Smith', 60000)
 
-    runs-on: ubuntu-latest
+        self.assertEqual(emp_1.email, 'samifadlallah21@gmail.com')
+        self.assertEqual(emp_2.email, 'sami_19942010@hotmail.com')
 
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v2
-      with:
-        python-version: "3.10"
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install flake8 pytest
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Lint with flake8
-      run: |
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Test with unittest
-      run: |
-        #Dear CCK students, 
-        #You have to insert here your code so it 
-        #will run in the last steps
+        emp_1.first = 'sam'
+        emp_2.first = 'smith'
+
+        self.assertEqual(emp_1.email, 'samifadlallah21@gmail.com')
+        self.assertEqual(emp_2.email, 'sami_19942010@hotmail.com')
+
+
+    def test_fullname(self):
+        emp_1 = Employee('sami', 'hamid', 50000)
+        emp_2 = Employee('sam', 'Smith', 60000)
+
+        self.assertEqual(emp_1.fullname, 'sami hamid')
+        self.assertEqual(emp_2.fullname, 'sam Smith')
+
+        emp_1.first = 'John'
+        emp_2.first = 'Jane'
+
+        self.assertEqual(emp_1.fullname, 'sami hamid')
+        self.assertEqual(emp_2.fullname, 'sam Smith')
+
+    def test_apply_raise(self):
+        emp_1 = Employee('sami', 'hamid', 50000)
+        emp_2 = Employee('sam', 'Smith', 60000)
+
+        emp_1.apply_raise()
+        emp_2.apply_raise()
+
+        self.assertEqual(emp_1.pay, 52500)
+        self.assertEqual(emp_2.pay, 63000)
+
+
+if __name__ == '__main__':
+    unittest.main()
+
+###### With Prints ######
+
+import unittest
+from employee import Employee
+
+
+class TestEmployee(unittest.TestCase):
+
+    def setUp(self):
+        print('setUp')
+        self.emp_1 = Employee('sami', 'hamid', 50000)
+        self.emp_2 = Employee('sam', 'Smith', 60000)
+
+    def tearDown(self):
+        print('tearDown\n')
+
+    def test_email(self):
+        print('test_email')
+        self.assertEqual(self.emp_1.email, samifadlallah21@gmail.com')
+        self.assertEqual(emp_2.email, 'sami_19942010@hotmail.com)
+
+        self.emp_1.first = 'sami'
+        self.emp_2.first = 'sam'
+
+        self.assertEqual(self.emp_1.email, samifadlallah21@gmail.com')
+        self.assertEqual(emp_2.email, 'sami_19942010@hotmail.com)
+
+    def test_fullname(self):
+        print('test_fullname')
+        self.assertEqual(self.emp_1.fullname, 'sami hamid')
+        self.assertEqual(self.emp_2.fullname, 'sam Smith')
+
+        self.emp_1.first = 'John'
+        self.emp_2.first = 'Jane'
+
+        self.assertEqual(self.emp_1.fullname, 'sami hamid')
+        self.assertEqual(self.emp_2.fullname, 'sam Smith')
+
+    def test_apply_raise(self):
+        print('test_apply_raise')
+        self.emp_1.apply_raise()
+        self.emp_2.apply_raise()
+
+        self.assertEqual(self.emp_1.pay, 52500)
+        self.assertEqual(self.emp_2.pay, 63000)
+
+
+if __name__ == '__main__':
+    unittest.main()
+
+
+###### setUpClass and tearDownClass ######
+
+@classmethod
+def setUpClass(cls):
+    print('setupClass')
+
+@classmethod
+def tearDownClass(cls):
+    print('teardownClass')
+
+
+##### Mocking #####
+def monthly_schedule(self, month):
+    response = requests.get(f'http://sam.com/{self.last}/{month}')
+    if response.ok:
+        return response.text
+    else:
+        return 'Bad Response!'
